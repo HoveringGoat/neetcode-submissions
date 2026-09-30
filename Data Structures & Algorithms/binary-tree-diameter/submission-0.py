@@ -1,0 +1,29 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        
+        maxDiameter: int = 0
+        # gets depth of deepest node in subtree
+        def dfs(node: Optional[TreeNode], depth: int):
+            if node is None:
+                return depth - 1
+
+            # call recursively
+            leftDepth = dfs(node.left, depth+1)
+            rightDepth = dfs(node.right, depth+1)
+            
+            nonlocal maxDiameter
+            diameter = leftDepth + rightDepth - depth - depth
+
+            #print(f"node[{node.val}] diameter: {diameter}, depth: {depth}, leftDepth:{leftDepth}, rightDepth: {rightDepth}")
+            maxDiameter = max(maxDiameter, diameter)
+            return max(leftDepth, rightDepth)
+
+        dfs(root, 1)
+        return maxDiameter
